@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Parent Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="app" class="container">
+    <div class="alert" id="alert">
+      <span>Important: Registration for 'County Fair Arts' closes in 3 days!</span>
+    </div>
+
+    <div class="card">
+      <h2>Account Info</h2>
+      <div id="parent-info">
+        <p><strong>Name:</strong> Jane Doe</p>
+        <p><strong>Email:</strong> jane.doe@email.com</p>
+        <p><strong>Club:</strong> Custer County 4-H</p>
+        <p><strong>Membership Status:</strong> Active</p>
+      </div>
+      <button id="edit-btn">Edit Profile</button>
+      <div id="edit-form" class="hidden">
+        <h4>Edit Parent Profile</h4>
+        <label for="name">Name</label>
+        <input type="text" id="name" value="Jane Doe">
+        <label for="email">Email</label>
+        <input type="email" id="email" value="jane.doe@email.com">
+        <label for="club">Club</label>
+        <input type="text" id="club" value="Custer County 4-H">
+        <label for="membership">Membership Status</label>
+        <select id="membership">
+          <option value="Active">Active</option>
+          <option value="Pending">Pending</option>
+          <option value="Expired">Expired</option>
+        </select>
+        <button id="save-btn">Save Changes</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Switch Child Profile</h3>
+      <button id="child-btn">John Doe</button>
+      <div id="child-info">
+        <h4>John Doe's Information</h4>
+        <p><strong>Events Enrolled:</strong> Livestock Show, Horse Riding</p>
+        <p><strong>Pending Results:</strong> Livestock Show</p>
+
+        <h4>Project List</h4>
+        <div id="projects">
+          <div class="project">
+            <p>Woodworking <span class="badge">Approved</span></p>
+            <div class="progress" style="width: 80%"></div>
+          </div>
+          <div class="project">
+            <p>Photography <span class="badge">Pending</span></p>
+            <div class="progress" style="width: 30%"></div>
+          </div>
+        </div>
+
+        <h4>Past Results</h4>
+        <p>Livestock Show: 1st Place</p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
