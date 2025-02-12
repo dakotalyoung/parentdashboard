@@ -7,30 +7,18 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectTrigger, SelectContent, SelectItem } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 
-// Simple ProgressBar component
-const ProgressBar = ({ value, max, label }) => {
-  const percentage = (value / max) * 100;
-  return (
-    <div className="w-full bg-gray-300 rounded-full h-2.5 mt-2">
-      <div
-        className="bg-blue-500 h-2.5 rounded-full"
-        style={{ width: ${percentage}% }}
-      />
-      {label && <p className="mt-1 text-xs text-center">{label}</p>}
-    </div>
-  );
-};
-
 const ParentDashboard = () => {
   const [selectedChild, setSelectedChild] = useState("John Doe");
   const [parentInfo, setParentInfo] = useState({ name: "Jane Doe", email: "jane.doe@email.com", club: "Custer County 4-H", photo: "", membership: "Active" });
   const [childInfo, setChildInfo] = useState({
-    "John Doe": { events: ["Livestock Show", "Horse Riding"], duesPaid: true, projectsSubmitted: true, paperworkCompleted: false, pendingResults: ["Livestock Show"], projects: [{ name: "Woodworking", status: "Approved", progress: 80 }, { name: "Photography", status: "Pending", progress: 30 }], pastResults: [{ event: "Livestock Show", result: "1st Place", points: 95, judgeComments: "Excellent work!" }] },
-    "Emily Doe": { events: ["Art Contest", "STEM Robotics"], duesPaid: false, projectsSubmitted: false, paperworkCompleted: true, pendingResults: ["Art Contest"], projects: [{ name: "Painting", status: "Completed", progress: 100 }], pastResults: [] },
-    "Michael Doe": { events: ["Public Speaking"], duesPaid: true, projectsSubmitted: true, paperworkCompleted: true, pendingResults: [], projects: [{ name: "Speech", status: "Approved", progress: 70 }], pastResults: [{ event: "Public Speaking", result: "Honorable Mention", points: 88, judgeComments: "Good presentation!" }] }
+    "John Doe": { events: ["Livestock Show", "Horse Riding"], duesPaid: true, projectsSubmitted: true, paperworkCompleted: false, pendingResults: ["Livestock Show"], projects: [{ name: "Woodworking", status: "Approved" }, { name: "Photography", status: "Pending" }], pastResults: [{ event: "Livestock Show", result: "1st Place", points: 95, judgeComments: "Excellent work!" }] },
+    "Emily Doe": { events: ["Art Contest", "STEM Robotics"], duesPaid: false, projectsSubmitted: false, paperworkCompleted: true, pendingResults: ["Art Contest"], projects: [{ name: "Painting", status: "Completed" }], pastResults: [] },
+    "Michael Doe": { events: ["Public Speaking"], duesPaid: true, projectsSubmitted: true, paperworkCompleted: true, pendingResults: [], projects: [{ name: "Speech", status: "Approved" }], pastResults: [{ event: "Public Speaking", result: "Honorable Mention", points: 88, judgeComments: "Good presentation!" }] }
   });
   const [editing, setEditing] = useState(false);
   const [showAlert, setShowAlert] = useState(true);  // For demo purposes, toggle this to hide the alert
+  const [showDeadlineAlert, setShowDeadlineAlert] = useState(true); // Deadline notification state
+
   const children = Object.keys(childInfo);
   const membershipStatuses = ["Active", "Pending", "Expired"];
 
@@ -50,15 +38,27 @@ const ParentDashboard = () => {
     alert("Registration for 'County Fair Arts' closes in 3 days!");
   };
 
+  const handleDeadlineAlertDismiss = () => {
+    setShowDeadlineAlert(false); // Dismiss the deadline notification
+  };
+
   return (
-    <div className="p-6 max-w-2xl mx-auto">
+    <div className="p-6 max-w-2xl mx-auto sm:max-w-full">
       {showAlert && (
         <div className="bg-yellow-500 text-white text-center p-4 mb-6 rounded">
           <span>Important: Registration for 'County Fair Arts' closes in 3 days!</span>
         </div>
       )}
       
-      <Card>
+      {/* Deadline notification */}
+      {showDeadlineAlert && (
+        <div className="bg-red-500 text-white text-center p-4 mb-6 rounded">
+          <span>Important: The registration deadline for 'Livestock Show' is approaching!</span>
+          <Button onClick={handleDeadlineAlertDismiss} className="ml-4">Dismiss</Button>
+        </div>
+      )}
+
+      <Card className="mb-6 sm:w-full">
         <CardContent className="p-4">
           <h2 className="text-xl font-bold mb-4">Account Info</h2>
           <div className="mb-4">
@@ -100,8 +100,8 @@ const ParentDashboard = () => {
           )}
         </CardContent>
       </Card>
-      
-      <Card className="mt-6">
+
+      <Card className="sm:w-full">
         <CardContent className="p-4">
           <h3 className="text-lg font-semibold mb-3">Switch Child Profile</h3>
           <DropdownMenu>
@@ -120,21 +120,22 @@ const ParentDashboard = () => {
             <h4 className="text-md font-bold">{selectedChild}'s Information</h4>
             <p><strong>Events Enrolled:</strong> {childInfo[selectedChild].events.join(", ") || "None"}</p>
             <p><strong>Pending Results:</strong> {childInfo[selectedChild].pendingResults.join(", ") || "None"}</p>
-            
+
+            {/* Project List */}
             <h4 className="text-md font-bold mt-4">Project List</h4>
             {childInfo[selectedChild].projects.map((project) => (
               <div key={project.name} className="mb-2">
                 <p>{project.name} <Badge color={statusColors[project.status]}>{project.status}</Badge></p>
-                <ProgressBar value={project.progress} max={100} label={Progress: ${project.progress}%} />
               </div>
             ))}
-            
+
+            {/* Past Results */}
             <h4 className="text-md font-bold mt-4">Past Results</h4>
             {childInfo[selectedChild].pastResults.length > 0 ? (
               childInfo[selectedChild].pastResults.map((result) => (
                 <div key={result.event}>
                   <p>{result.event}: {result.result}</p>
-                  <Button onClick={() => alert(Comments: ${result.judgeComments}\nPoints: ${result.points})}>View Details</Button>
+                  <Button onClick={() => alert(`Comments: ${result.judgeComments}\nPoints: ${result.points}`)}>View Details</Button>
                 </div>
               ))
             ) : (
@@ -147,4 +148,4 @@ const ParentDashboard = () => {
   );
 };
 
-export default ParentDashboard
+export default ParentDashboard;
